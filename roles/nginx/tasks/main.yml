@@ -1,0 +1,19 @@
+---
+- name: install nginx
+  yum:
+    name:
+      - nginx
+      - nginx-mod-stream
+    state: present
+
+- name: configure nginx
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/conf.d/kapiserver.conf
+  notify: restart nginx
+
+- name: start service nginx
+  service:
+    name: nginx
+    state: started
+    enabled: yes

@@ -1,0 +1,13 @@
+- hosts: all
+  tasks:
+    - import_role:
+        name: haproxy
+      when: inventory_hostname in groups['lb']
+
+    - import_role:
+        name: keepalived
+      when: inventory_hostname in groups['lb']
+
+    - import_role:
+        name: nginx
+      when: inventory_hostname in groups['nginx']

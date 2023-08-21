@@ -1,0 +1,20 @@
+include /usr/share/nginx/modules/*.conf;
+
+events {
+    worker_connections 1024;
+}
+
+# L4 ，LB for kubernetes master
+stream {
+    log_format  main  '$remote_addr $upstream_addr - [$time_local] $status $upstream_bytes_sent';
+    access_log  /var/log/nginx/kapiserver-access.log  main;
+    upstream kapiserver {
+{% for host in groups['nginx'] %}
+       server {{ hostvars[host]['inventory_hostname'] }}:6443; #master apiserver port
+{% endfor %}
+    }
+    server {
+       listen 1443; # kubernetes master run on 6443,You can customize the port
+       proxy_pass kapiserver;
+    }
+}

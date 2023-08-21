@@ -1,0 +1,23 @@
+---
+- name: Disable and stop firewalld
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: Set SElinux setenforce 0
+  shell: setenforce 0
+
+- name: config selinux
+  shell: sed -i 's/ASELINUX=.*/SELINUX=disabled/' /etc/selinux/config
+
+- name: modprobe
+  shell: modprobe br_netfilter
+  
+- name: kubernetes kernel config
+  template:
+    src: k8s.config.j2
+    dest: /etc/sysctl.d/kubernetes.conf
+
+- name: effect kubernetes.conf
+  shell: sysctl -p /etc/sysctl.d/kubernetes.conf

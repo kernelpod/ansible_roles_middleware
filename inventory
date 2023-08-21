@@ -1,0 +1,14 @@
+[all:vars]
+ansible_ssh_user=root
+ansible_ssh_pass="hadoop"
+ansible_ssh_port=22
+[lb]
+192.168.2.211 STATE=MASTER VRID=31 PRIORITY=100
+192.168.2.116 STATE=BACKUP VRID=31 PRIORITY=90
+192.168.2.190 STATE=BACKUP VRID=31 PRIORITY=80
+
+[nginx]
+192.168.2.211
+192.168.2.116
+192.168.2.190
+

@@ -1,0 +1,7 @@
+---
+# handlers file for roles/keepalived
+- name: restart keepalived
+  service:
+    name: keepalived
+    state: restarted
+
